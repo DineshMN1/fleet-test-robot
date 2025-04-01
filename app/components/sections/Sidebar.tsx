@@ -1,7 +1,7 @@
-"use client"
-import { useState } from "react";
+"use client";
+import Link from "next/link";
 
-export function Sidebar({ onRoverClick }: { onRoverClick: (roverId: string) => void }) {
+export function Sidebar() {
   const rovers = [
     { id: "rover1", name: "Rover 1" },
     { id: "rover2", name: "Rover 2" },
@@ -11,24 +11,23 @@ export function Sidebar({ onRoverClick }: { onRoverClick: (roverId: string) => v
   ];
 
   return (
-    <div className="w-64 bg-gray-800 text-white">
-      <div className="p-4">
-        <h2>Dashboard</h2>
-        <div className="mt-6">
-          <h3 className="font-bold">Rovers:</h3>
-          <ul>
-            {rovers.map((rover) => (
-              <li key={rover.id}>
+    <div className="w-64 bg-gray-800 text-white h-screen p-4">
+      <h2 className="text-xl font-bold">Dashboard</h2>
+      <div className="mt-6">
+        <h3 className="font-bold">Rovers:</h3>
+        <ul>
+          {rovers.map((rover) => (
+            <li key={rover.id} className="my-2">
+              <Link href={`/rovers/${rover.id}`}>
                 <button
                   className="text-white hover:bg-blue-600 p-2 rounded-md w-full text-left"
-                  onClick={() => onRoverClick(rover.id)}
                 >
                   {rover.name}
                 </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

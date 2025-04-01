@@ -11,7 +11,7 @@ export default function Home() {
         <Header />
         <main className="flex-1 overflow-y-auto p-6">
           {/* Content here */}
-          <h1>Welcome to the Dashboard</h1>
+          <h1 className="text-black">Welcome to the Dashboard</h1>
         </main>
         <Footer />
       </div>
