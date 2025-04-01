@@ -1,51 +1,22 @@
-export async function GET(req: Request, { params }: { params: { roverId: string } }) {
-  const { roverId } = await params;
-
-  if (!roverId) {
-    console.error("roverId is required");
-    return new Response(
-      JSON.stringify({ error: "roverId is required" }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
-    );
+import { NextRequest, NextResponse } from 'next/server';
+export async function GET(req: NextRequest, { params }: { params?: { roverId?: string } }) {
+  console.log('Received params:', params);  // Log params to verify
+  if (!params?.roverId) {
+    return NextResponse.json({ error: "roverId is required" }, { status: 400 });
   }
 
+  const { roverId } = params;
   console.log(`Fetching data for rover: ${roverId}`);
 
   try {
-    const res = await fetch(`https://fleetbots-production.up.railway.app/api/rovers/${roverId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
+    const res = await fetch(`https://fleetbots-production.up.railway.app/api/${roverId}`);
     if (!res.ok) {
-      console.error(`Failed to fetch data for rover: ${roverId}. Status: ${res.status}`);
-      return new Response(
-        JSON.stringify({ error: `Failed to fetch rover data for ${roverId}` }),
-        { status: res.status, headers: { "Content-Type": "application/json" } }
-      );
+      throw new Error(`Failed to fetch data for rover: ${roverId}`);
     }
-
     const data = await res.json();
-
-    if (!data || data.error) {
-      console.error(`Error fetching rover data: ${data?.error || 'Unknown error'}`);
-      return new Response(
-        JSON.stringify({ error: "Failed to retrieve valid data" }),
-        { status: 500, headers: { "Content-Type": "application/json" } }
-      );
-    }
-
-    return new Response(JSON.stringify(data), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    return NextResponse.json(data);
   } catch (error) {
-    console.error("Error fetching data from Python backend:", error.message);
-    return new Response(
-      JSON.stringify({ error: "Internal Server Error" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    console.error('Error fetching rover data:', error);  // Additional logging
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
