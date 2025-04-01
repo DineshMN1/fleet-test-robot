@@ -12,6 +12,40 @@
   --font-mono: var(--font-geist-mono);
 }
 
+
+/* globals.css */
+
+/* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7fafc;
+  color: #333;
+  line-height: 1.5;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style-type: none;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+}
+
+button {
+  cursor: pointer;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
