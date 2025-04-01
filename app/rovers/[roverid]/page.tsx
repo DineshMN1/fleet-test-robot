@@ -14,7 +14,7 @@ interface RoverData {
 }
 
 const RoverPage = () => {
-  const { roverId } = useParams(); // Dynamically extracts roverId from the URL
+  const { roverId } = useParams() as { roverId: string };
 
   const [roverData, setRoverData] = useState<RoverData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -27,13 +27,13 @@ const RoverPage = () => {
 
     const fetchRoverData = async () => {
       try {
-        const res = await fetch(`https://fleetbots-production.up.railway.app/api/rovers/${roverId}`);
-        if (res.ok) {
-          const data: RoverData = await res.json();
-          setRoverData(data);
-        } else {
-          setError(`Failed to fetch rover data: ${res.statusText}`);
+        const res = await fetch(`/api/rovers/[roverId]${roverId}`);
+        if (!res.ok) {
+          setError(`Failed to fetch rover data`);
+          return;
         }
+        const data: RoverData = await res.json();
+        setRoverData(data);
       } catch (err) {
         setError(`Error fetching rover data: ${err}`);
       }
